@@ -16,7 +16,7 @@ function App() {
     setMovies([]);
 
     try {
-      const res = await fetch("/api/recommend", {
+      const res = await fetch("http://localhost:5000/recommend", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,14 +26,14 @@ function App() {
 
       const data = await res.json();
 
-      if (data.movies) {
+      if (Array.isArray(data.movies)) {
         setMovies(data.movies);
       } else {
         alert("No recommendations found.");
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong. Please try again.");
+      alert("Something went wrong.");
     }
 
     setLoading(false);
@@ -42,14 +42,11 @@ function App() {
   return (
     <div className="app-container">
       <h1 className="title">Movie Recommendation App</h1>
-      <p className="subtitle">
-        Tell us what kind of movies you like and we’ll recommend some!
-      </p>
 
       <div className="input-section">
         <input
           type="text"
-          placeholder="e.g. action movies with a strong female lead"
+          placeholder="e.g. action movies with strong female lead"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
@@ -64,7 +61,7 @@ function App() {
         <div className="movie-grid">
           {movies.map((movie, index) => (
             <div className="movie-card" key={index}>
-              <p className="movie-title">{movie}</p>
+              {movie}
             </div>
           ))}
         </div>
